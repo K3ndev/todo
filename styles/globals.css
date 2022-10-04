@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@layer base {
+    #__next {
+        @apply w-screen h-screen bg-[#EAEDEE] p-10
+    }
+}

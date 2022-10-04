@@ -4,9 +4,8 @@ import { Input } from '../index'
 export const TodoList: NextPage = () => {
 
     return (
-        <section className=' lg:block w-full space-y-5'>
+        <div className='w-full gap-4 flex flex-col items-center justify-center'>
             <Input />
-            <h2>todolist</h2>
-        </section>
+        </div>
     )
 }

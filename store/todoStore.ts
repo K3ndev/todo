@@ -1,11 +1,26 @@
 import create from 'zustand'
+import Home from '../pages'
 
 interface todoList {
     category: number,
     todoList: string[]
 }
 
-const useBearStore = create((set) => ({
-    categoryList: [],
-    addTodo: (category: number, todoList: string[]) => set((state: { categoryList: [] }) => ({ categoryList: [...state.categoryList, { category: category, todoList: todoList }] })),
+export const useTodoStore = create((set) => ({
+    categoryList: [
+        {
+            category: 'Home',
+            todoList: []
+        }
+
+    ],
+    addTodo: (category: number, todoList: string[]) => set((state: { categoryList: [] }) => ({
+        categoryList: [...state.categoryList, { category: category, todoList: todoList }]
+    })),
+    updateTodo: () => set(() => {
+
+    }),
+    deleteTodo: () => set(() => {
+
+    }),
 }))
