@@ -19,7 +19,7 @@ export const Input: NextPage = () => {
 
     // zustand 
     const { categoryList, addTodo } = useTodoStore<any>((state) => state)
-    console.log(categoryList)
+    // console.log(categoryList)
 
     // states 
     const [todoList, setTodoList] = useState<string[]>([])

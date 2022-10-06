@@ -1,3 +1,4 @@
+import { boolean } from 'yup'
 import create from 'zustand'
 import Home from '../pages'
 
@@ -9,18 +10,21 @@ interface todoList {
 export const useTodoStore = create((set) => ({
     categoryList: [
         {
-            category: 'Home',
+            categoryName: 'Home UNDER DEVELOPMENT',
+            isUsed: true,
             todoList: []
         }
 
     ],
-    addTodo: (category: number, todoList: string[]) => set((state: { categoryList: [] }) => ({
-        categoryList: [...state.categoryList, { category: category, todoList: todoList }]
+    currentCategory: '',
+    addTodo: (category: string, todoList: string[]) => set((state: { categoryList: [] }) => ({
+        categoryList: [...state.categoryList, { categoryName: category, isUsed: false, todoList: todoList }]
     })),
-    updateTodo: () => set(() => {
+    resetIsUsed: (indexNum: number) => set((state: any) => {
+        // state.categoryList[indexNum].isUsed = false
+    }),
+    deleteTodo: () => set((states: any) => {
 
     }),
-    deleteTodo: () => set(() => {
 
-    }),
 }))

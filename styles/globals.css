@@ -9,3 +9,35 @@
         @apply w-screen h-screen bg-[#EAEDEE] p-10
     }
 }
+
+
+.scrollbar-hide {
+    overflow: auto;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+
+/* changing the content when its hovered */
+.item-custom p.new-label span {
+    position: relative;
+    content: 'NEW'
+}
+
+.item-custom:hover p.new-label span {
+    display: none;
+}
+
+.item-custom:hover p.new-label::after {
+    content: url('../public/foo.svg');
+}
