@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
 import { useTodoStore } from '../../store/todoStore'
@@ -16,15 +16,13 @@ interface IFormInputs {
 interface store {
     categoryList: [],
     currentCategory: '',
-    resetIsUsed: () => void,
-    deleteTodo: () => void
+    reset: () => void,
 }
 
 interface categoryList {
     categoryName: string,
     isUsed: boolean,
     todoList: []
-
 }
 
 // validation
@@ -36,15 +34,16 @@ const schema = yup.object({
 
 export const Sidebar: NextPage = () => {
 
+    // store
+    const { categoryList, addTodo, resetEverything } = useTodoStore<any>((states) => states)
+
     // states
     const [currentCategory, setCurrentCategory] = useState<string[]>([])
     const [inputCurrent, setInputCurrent] = useState('')
+    const tempCategory = categoryList;
 
     // for auto animate
     const [parent] = useAutoAnimate<HTMLDivElement>()
-
-    // store
-    const { addTodo, categoryList, resetIsUsed } = useTodoStore<any>((states) => states)
 
     const {
         register,
@@ -78,18 +77,29 @@ export const Sidebar: NextPage = () => {
         reset()
     }
     const onClickHandler = (categoryName: string) => {
-        // console.log(categoryList.filter((item: categoryList) => {
-        //     return item.categoryName === categoryName
-        // }))
-        resetIsUsed(getIsUsedIndex)
+        // i don't know how to use map inside of set() in zustand so this is temporary
+        const reset = () => {
+            tempCategory.map((item: categoryList) => {
+                item.isUsed = false;
+            })
+            tempCategory.map((item: categoryList) => {
+                if (item.categoryName === categoryName) {
+                    item.isUsed = true;
+                }
+            })
+        }
+        reset();
+        resetEverything(tempCategory)
     }
     const onDeleteClickHandler = (categoryName: string) => {
-        // console.log(getIsUsedIndex())
+        const findIndex = () => {
+            return tempCategory.map((item: categoryList) => {
+                return item.categoryName
+            }).indexOf(categoryName)
+        }
+        tempCategory.splice(findIndex(), 1);
+        resetEverything(tempCategory)
     }
-
-
-
-    console.log(categoryList)
 
     return (
         <aside className='hidden lg:inline-flex justify-center p-10 w-[45%] h-[90vh] bg-white rounded-[20px]'>
@@ -103,22 +113,22 @@ export const Sidebar: NextPage = () => {
                         categoryList.map((item: categoryList) => {
                             return (
                                 <div key={item.categoryName}>
-                                    <div className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between items-center rounded-[20px] w-full h-16`}>
-                                        <button className="flex gap-6 items-center pl-6 py-4" onClick={() => onClickHandler(item.categoryName)} >
+                                    <div onClick={() => onClickHandler(item.categoryName)} className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between items-center rounded-[20px] w-full h-16 cursor-pointer`}>
+                                        <div className="flex gap-6 items-center pl-6 py-4" >
                                             <Image
                                                 src="/dona_Avatar.svg"
                                                 alt="dona_Avatar"
                                                 height={15} width={15}
                                             />
                                             <p className="font-normal text-black text-base">{item.categoryName}</p>
-                                        </button>
+                                        </div>
 
                                         {/* using css, that will change the content */}
-                                        <button onClick={() => onDeleteClickHandler(item.categoryName)} className="item-custom bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6 hover:bg-[#EB4747]">
+                                        <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6 hover:bg-[#EB4747]">
                                             <p className="new-label">
                                                 <span>{item.todoList.length}</span>
                                             </p>
-                                        </button>
+                                        </div>
 
                                     </div>
                                 </div>

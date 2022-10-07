@@ -3,28 +3,44 @@ import create from 'zustand'
 import Home from '../pages'
 
 interface todoList {
-    category: number,
+    categoryName: string,
+    isUsed: boolean,
     todoList: string[]
 }
 
-export const useTodoStore = create((set) => ({
+export const useTodoStore = create((set, get) => ({
+
+    // states
     categoryList: [
         {
-            categoryName: 'Home UNDER DEVELOPMENT',
+            categoryName: 'Home',
             isUsed: true,
-            todoList: []
+            todoList: ['nani', 'test']
         }
 
     ],
     currentCategory: '',
-    addTodo: (category: string, todoList: string[]) => set((state: { categoryList: [] }) => ({
-        categoryList: [...state.categoryList, { categoryName: category, isUsed: false, todoList: todoList }]
-    })),
-    resetIsUsed: (indexNum: number) => set((state: any) => {
-        // state.categoryList[indexNum].isUsed = false
-    }),
-    deleteTodo: () => set((states: any) => {
 
-    }),
+
+    // computed 
+
+
+
+    // functions
+    addTodo: (category: string, todoList: string[]) => {
+        set((state: { categoryList: [] }) => ({
+            categoryList: [...state.categoryList, { categoryName: category, isUsed: false, todoList: todoList }]
+        }))
+    },
+    addList: (index: number) => set((state: []) => ({
+
+    })),
+    resetEverything: (newArr: []) => {
+        set((state: { categoryList: [] }) => ({
+            categoryList: newArr
+        }))
+    },
+
+
 
 }))
