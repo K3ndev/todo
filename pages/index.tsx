@@ -39,7 +39,7 @@ const Home: NextPage = () => {
 
           <div className='w-full lg:w-[66%]'>
 
-            <div className='w-full flex justify-start mt-[3rem] mb-[2rem]'>
+            <div className='w-full flex justify-start mt-9'>
               <div className='flex gap-5'>
                 <Image
                   src="/dona_Avatar.svg"

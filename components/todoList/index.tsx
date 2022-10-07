@@ -46,7 +46,7 @@ export const TodoList: NextPage = () => {
             <Input />
 
             {/* list */}
-            <div ref={parent} className='w-full h-[78vh] scrollbar-hide flex flex-col gap-3'>
+            <div ref={parent} className='w-full h-[77vh] scrollbar-hide flex flex-col gap-3'>
 
                 {/*  */}
                 {
