@@ -1,12 +1,10 @@
 import { NextPage } from "next";
-import { useState, useMemo } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
 import { useTodoStore } from '../../store/todoStore'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { AiOutlineDelete } from 'react-icons/ai'
 
 
 // type safe
@@ -33,7 +31,6 @@ export const Sidebar: NextPage = () => {
     const { categoryList, addTodo, resetEverything } = useTodoStore<any>((states: any) => states)
 
     // states
-    const [currentCategory, setCurrentCategory] = useState<string[]>([])
     const tempCategory = categoryList;
 
     // for auto animate
@@ -49,7 +46,6 @@ export const Sidebar: NextPage = () => {
 
 
     // Fn
-    // finding the input that user enter and return boolean
     const isCategory = (input: string) => {
         return categoryList.find((item: categoryList) => {
             return item.categoryName === input
@@ -59,14 +55,12 @@ export const Sidebar: NextPage = () => {
     const getIsUsedIndex = () => {
         return categoryList.map((item: categoryList) => item.isUsed).indexOf(true)
     }
-    // when you hit enter after you enter something in the input
     const onSubmitHandler = (data: IFormInputs) => {
         if (isCategory(data.todoCategory) === undefined) {
             addTodo(data.todoCategory, [])
         }
         inputReset()
     }
-    // when the todoCategory clicked
     const onClickHandler = (categoryName: string) => {
         // i don't know how to use map inside of set() in zustand so this is temporary
         const reset = () => {
@@ -82,7 +76,6 @@ export const Sidebar: NextPage = () => {
         reset();
         resetEverything(tempCategory)
     }
-    // deleting the category
     const onDeleteClickHandler = (categoryName: string) => {
         const findIndex = () => {
             return tempCategory.map((item: categoryList) => {
@@ -92,7 +85,6 @@ export const Sidebar: NextPage = () => {
         tempCategory.splice(findIndex(), 1);
         resetEverything(tempCategory)
     }
-
 
 
     return (

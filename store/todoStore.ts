@@ -1,6 +1,4 @@
-import { boolean } from 'yup'
 import create from 'zustand'
-import Home from '../pages'
 
 interface todoList {
     categoryName: string,
@@ -15,7 +13,7 @@ export const useTodoStore = create((set, get) => ({
         {
             categoryName: 'Home',
             isUsed: true,
-            todoList: []
+            todoList: ['foo1', 'foo2']
         }
 
     ],

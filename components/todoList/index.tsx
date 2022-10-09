@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import _ from 'lodash';
+import { AiOutlineDelete } from 'react-icons/ai'
 
 
 interface categoryList {
@@ -26,9 +27,6 @@ interface IFormInputs {
 
 export const TodoList: NextPage = () => {
 
-    // states 
-    const [tempList, setTempList] = useState<[]>([])
-
     // autoanimate
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
@@ -39,12 +37,6 @@ export const TodoList: NextPage = () => {
     const getUniqueId = () => {
         return Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
     }
-
-    const result = (() => {
-        return categoryList.filter((item: categoryList) => {
-            return item.isUsed === true
-        })
-    })()
 
 
     //  form 
@@ -70,33 +62,24 @@ export const TodoList: NextPage = () => {
         return categoryList.map((item: categoryList) => item.isUsed).indexOf(true)
     })()
 
-
     // Fn for submit
     function onSubmitHandler(data: IFormInputs) {
         if (!isTodoList(data.todoList)) {
-            setTodoList((prev) => {
-                return [...prev, data.todoList]
-            })
+            const deepClone = _.cloneDeep(categoryList);
+            console.log(deepClone)
+            deepClone[getIsUsedIndex].todoList.unshift(data.todoList)
+
+            resetEverything(deepClone)
         }
         reset()
     }
-
-    useEffect(() => {
-        const deepClone = _.cloneDeep(categoryList);
-        deepClone[getIsUsedIndex].todoList = todoList.reverse()
-        resetEverything(deepClone)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [todoList])
-
-    // console.log(categoryList)
-
     return (
         <div className='w-full gap-4 flex flex-col items-center justify-center'>
 
             <form action="#" onSubmit={handleSubmit(onSubmitHandler)} className='w-full'>
                 <label htmlFor="todoList">
                     <div className='w-full'>
-                        <input autoComplete="off" {...register("todoList")} placeholder='Write a new task...' className='placeholder:font-normal placeholder:text-xs placeholder:md:text-sm placeholder:lg:text-base font-normal text-xs px-6 py-4 w-full h-11 lg:h-16 bg-[#D9D9D9] rounded-2xl outline-0 focus:bg-white' />
+                        <input autoComplete="off" {...register("todoList")} placeholder='Write a new task...' className='placeholder:font-normal placeholder:text-xs placeholder:md:text-sm placeholder:lg:text-base font-normal text-xs md:text-sm lg:text-base px-6 py-4 w-full h-11 lg:h-16 bg-[#D9D9D9] rounded-2xl outline-0 focus:bg-white' />
                     </div>
                 </label>
             </form>
@@ -106,10 +89,14 @@ export const TodoList: NextPage = () => {
 
                 {/*  */}
                 {
-                    result[0]?.todoList?.map((item: []) => {
+                    categoryList[getIsUsedIndex].todoList.map((item: []) => {
                         return (
-                            <div key={getUniqueId()} className='w-full'>
-                                <p className='font-normal text-xs md:text-sm lg:text-base px-6 py-4 w-full h-11 lg:h-16 bg-white rounded-2xl outline-0'>{item}</p>
+                            <div key={getUniqueId()} className='w-full flex justify-between items-center rounded-2xl bg-white h-11 lg:h-16 px-6 py-4'>
+                                {/* <p className='font-normal text-xs md:text-sm lg:text-base w-full h-11 lg:h-16 bg-white rounded-2xl outline-0 flex items-center'>{item}</p> */}
+                                <p className='font-normal text-xs md:text-sm lg:text-base'>{item}</p>
+                                <div className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
+                                    <AiOutlineDelete />
+                                </div>
                             </div>
                         )
                     })
