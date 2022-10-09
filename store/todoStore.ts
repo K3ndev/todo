@@ -13,7 +13,7 @@ export const useTodoStore = create((set, get) => ({
         {
             categoryName: 'Home',
             isUsed: true,
-            todoList: ['foo1', 'foo2']
+            todoList: []
         }
 
     ],

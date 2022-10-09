@@ -66,13 +66,27 @@ export const TodoList: NextPage = () => {
     function onSubmitHandler(data: IFormInputs) {
         if (!isTodoList(data.todoList)) {
             const deepClone = _.cloneDeep(categoryList);
-            console.log(deepClone)
-            deepClone[getIsUsedIndex].todoList.unshift(data.todoList)
+            deepClone[getIsUsedIndex].todoList = [...deepClone[getIsUsedIndex].todoList, { list: data.todoList, isChecked: false }].reverse()
 
             resetEverything(deepClone)
         }
         reset()
     }
+    // Fn for checking the list 
+    function changeChecked(listName: string) {
+        const deepClone = _.cloneDeep(categoryList);
+
+        // getting the index base on listName
+        const getIndex = (listName: string) => {
+            return deepClone[getIsUsedIndex].todoList.map((item: any) => {
+                return item.list
+            }).indexOf(listName)
+        }
+
+        deepClone[getIsUsedIndex].todoList[getIndex(listName)].isChecked = !deepClone[getIsUsedIndex].todoList[getIndex(listName)].isChecked
+        resetEverything(deepClone)
+    }
+
     return (
         <div className='w-full gap-4 flex flex-col items-center justify-center'>
 
@@ -89,11 +103,14 @@ export const TodoList: NextPage = () => {
 
                 {/*  */}
                 {
-                    categoryList[getIsUsedIndex].todoList.map((item: []) => {
+                    categoryList[getIsUsedIndex].todoList.reverse().map((item: any) => {
                         return (
                             <div key={getUniqueId()} className='w-full flex justify-between items-center rounded-2xl bg-white h-11 lg:h-16 px-6 py-4'>
-                                {/* <p className='font-normal text-xs md:text-sm lg:text-base w-full h-11 lg:h-16 bg-white rounded-2xl outline-0 flex items-center'>{item}</p> */}
-                                <p className='font-normal text-xs md:text-sm lg:text-base'>{item}</p>
+
+                                <div className='w-full flex gap-4 items-center'>
+                                    <button onClick={() => { changeChecked(item.list) }} className='w-6 h-6 bg-[#D9D9D9] rounded-lg'></button>
+                                    <p className={`${item.isChecked && 'line-through'} font-normal text-xs md:text-sm lg:text-base w-full`}>{item.list}</p>
+                                </div>
                                 <div className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
                                     <AiOutlineDelete />
                                 </div>
