@@ -37,7 +37,7 @@ const Home: NextPage = () => {
         <section className='flex flex-col gap-7 w-full h-[90vh] items-center'>
 
 
-          <div className='w-full lg:w-[66%]'>
+          <div className='w-full lg:w-[66%] flex flex-col gap-4'>
 
             <div className='w-full flex justify-start mt-9'>
               <div className='flex gap-5'>

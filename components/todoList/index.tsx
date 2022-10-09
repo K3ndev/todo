@@ -20,7 +20,7 @@ export const TodoList: NextPage = () => {
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
     // zustand 
-    const { categoryList } = useTodoStore<any>((states) => states)
+    const { categoryList, resetEverything } = useTodoStore<any>((states) => states)
 
     // get isUsed
 
@@ -29,15 +29,11 @@ export const TodoList: NextPage = () => {
         return Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
     }
 
-    const getIsUsed = () => {
+    const result = (() => {
         return categoryList.filter((item: categoryList) => {
             return item.isUsed === true
         })
-    }
-    const result = getIsUsed()
-
-
-
+    })()
 
 
     return (
@@ -46,7 +42,7 @@ export const TodoList: NextPage = () => {
             <Input />
 
             {/* list */}
-            <div ref={parent} className='w-full h-[77vh] scrollbar-hide flex flex-col gap-3'>
+            <div ref={parent} className='w-full h-[75vh] scrollbar-hide flex flex-col gap-3'>
 
                 {/*  */}
                 {

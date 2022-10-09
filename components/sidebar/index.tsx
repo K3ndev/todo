@@ -13,11 +13,6 @@ import { AiOutlineDelete } from 'react-icons/ai'
 interface IFormInputs {
     todoCategory: string
 }
-interface store {
-    categoryList: [],
-    currentCategory: '',
-    reset: () => void,
-}
 
 interface categoryList {
     categoryName: string,
@@ -35,11 +30,10 @@ const schema = yup.object({
 export const Sidebar: NextPage = () => {
 
     // store
-    const { categoryList, addTodo, resetEverything } = useTodoStore<any>((states) => states)
+    const { categoryList, addTodo, resetEverything } = useTodoStore<any>((states: any) => states)
 
     // states
     const [currentCategory, setCurrentCategory] = useState<string[]>([])
-    const [inputCurrent, setInputCurrent] = useState('')
     const tempCategory = categoryList;
 
     // for auto animate
@@ -48,34 +42,31 @@ export const Sidebar: NextPage = () => {
     const {
         register,
         handleSubmit,
-        reset,
+        reset: inputReset,
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema)
     });
 
 
     // Fn
+    // finding the input that user enter and return boolean
     const isCategory = (input: string) => {
         return categoryList.find((item: categoryList) => {
             return item.categoryName === input
         })
     }
-    const getAllCurrentCategory = () => {
-        categoryList.map((item: categoryList) => {
-            setCurrentCategory((prev) => {
-                return [...prev, item.categoryName];
-            })
-        })
-    }
+    // return index of isUsed
     const getIsUsedIndex = () => {
         return categoryList.map((item: categoryList) => item.isUsed).indexOf(true)
     }
+    // when you hit enter after you enter something in the input
     const onSubmitHandler = (data: IFormInputs) => {
         if (isCategory(data.todoCategory) === undefined) {
             addTodo(data.todoCategory, [])
         }
-        reset()
+        inputReset()
     }
+    // when the todoCategory clicked
     const onClickHandler = (categoryName: string) => {
         // i don't know how to use map inside of set() in zustand so this is temporary
         const reset = () => {
@@ -91,6 +82,7 @@ export const Sidebar: NextPage = () => {
         reset();
         resetEverything(tempCategory)
     }
+    // deleting the category
     const onDeleteClickHandler = (categoryName: string) => {
         const findIndex = () => {
             return tempCategory.map((item: categoryList) => {
@@ -100,6 +92,8 @@ export const Sidebar: NextPage = () => {
         tempCategory.splice(findIndex(), 1);
         resetEverything(tempCategory)
     }
+
+
 
     return (
         <aside className='hidden lg:inline-flex justify-center p-10 w-[45%] h-[90vh] bg-white rounded-[20px]'>

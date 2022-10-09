@@ -15,12 +15,10 @@ export const useTodoStore = create((set, get) => ({
         {
             categoryName: 'Home',
             isUsed: true,
-            todoList: ['nani', 'test']
+            todoList: []
         }
 
     ],
-    currentCategory: '',
-
 
     // computed 
 
@@ -32,9 +30,6 @@ export const useTodoStore = create((set, get) => ({
             categoryList: [...state.categoryList, { categoryName: category, isUsed: false, todoList: todoList }]
         }))
     },
-    addList: (index: number) => set((state: []) => ({
-
-    })),
     resetEverything: (newArr: []) => {
         set((state: { categoryList: [] }) => ({
             categoryList: newArr
