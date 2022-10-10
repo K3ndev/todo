@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import _ from 'lodash';
 import { AiOutlineDelete } from 'react-icons/ai'
+import { BsCheckSquareFill } from 'react-icons/bs'
 
 
 interface categoryList {
@@ -51,11 +52,12 @@ export const TodoList: NextPage = () => {
         resolver: yupResolver(schema)
     });
 
-    // finding IsUsed === true
-    const isTodoList = (input: string) => {
-        return todoList.some((item) => {
-            return item === input
-        })
+
+    // getting the index base on listName
+    const getIndex = (listName: string) => {
+        return categoryList[getIsUsedIndex].todoList.map((item: any) => {
+            return item.list
+        }).indexOf(listName)
     }
     //  to get the isUsed that is true, return an index 
     const getIsUsedIndex = (() => {
@@ -64,7 +66,8 @@ export const TodoList: NextPage = () => {
 
     // Fn for submit
     function onSubmitHandler(data: IFormInputs) {
-        if (!isTodoList(data.todoList)) {
+        //  put some conditioning here to block duplicate list
+        if (true) {
             const deepClone = _.cloneDeep(categoryList);
             deepClone[getIsUsedIndex].todoList = [...deepClone[getIsUsedIndex].todoList, { list: data.todoList, isChecked: false }].reverse()
 
@@ -103,13 +106,17 @@ export const TodoList: NextPage = () => {
 
                 {/*  */}
                 {
-                    categoryList[getIsUsedIndex].todoList.reverse().map((item: any) => {
+                    categoryList[getIsUsedIndex]?.todoList.reverse().map((item: any) => {
                         return (
-                            <div key={getUniqueId()} className='w-full flex justify-between items-center rounded-2xl bg-white h-11 lg:h-16 px-6 py-4'>
+                            <div key={getUniqueId()} className='bg-white w-full flex items-center rounded-2xl h-11 lg:h-16 px-6 py-4'>
 
                                 <div className='w-full flex gap-4 items-center'>
-                                    <button onClick={() => { changeChecked(item.list) }} className='w-6 h-6 bg-[#D9D9D9] rounded-lg'></button>
-                                    <p className={`${item.isChecked && 'line-through'} font-normal text-xs md:text-sm lg:text-base w-full`}>{item.list}</p>
+                                    <button onClick={() => { changeChecked(item.list) }} className={`${item.isChecked ? 'bg-white' : 'bg-[#D9D9D9]'} w-6 h-6 rounded-lg`}>
+                                        {
+                                            item.isChecked && <BsCheckSquareFill size='24' />
+                                        }
+                                    </button>
+                                    <p className={`${item.isChecked && 'line-through decoration-4'} font-normal text-xs md:text-sm lg:text-base w-full`}>{item.list}</p>
                                 </div>
                                 <div className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
                                     <AiOutlineDelete />
@@ -123,5 +130,8 @@ export const TodoList: NextPage = () => {
 
             </div>
         </div >
+
+
     )
+
 }

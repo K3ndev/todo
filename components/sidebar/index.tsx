@@ -5,6 +5,7 @@ import { useTodoStore } from '../../store/todoStore'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { off } from "process";
 
 
 // type safe
@@ -77,15 +78,16 @@ export const Sidebar: NextPage = () => {
         resetEverything(tempCategory)
     }
     const onDeleteClickHandler = (categoryName: string) => {
-        const findIndex = () => {
-            return tempCategory.map((item: categoryList) => {
-                return item.categoryName
-            }).indexOf(categoryName)
+        if (categoryName !== 'Home') {
+            const findIndex = () => {
+                return tempCategory.map((item: categoryList) => {
+                    return item.categoryName
+                }).indexOf(categoryName)
+            }
+            tempCategory.splice(findIndex(), 1);
+            resetEverything(tempCategory)
         }
-        tempCategory.splice(findIndex(), 1);
-        resetEverything(tempCategory)
     }
-
 
     return (
         <aside className='hidden lg:inline-flex justify-center p-10 w-[45%] h-[90vh] bg-white rounded-[20px]'>
@@ -110,11 +112,18 @@ export const Sidebar: NextPage = () => {
                                         </div>
 
                                         {/* using css, that will change the content */}
-                                        <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6 hover:bg-[#EB4747]">
-                                            <p className="new-label">
-                                                <span>{item.todoList.length}</span>
-                                            </p>
-                                        </div>
+                                        {item.categoryName === 'Home' ?
+                                            <div className="bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6">
+                                                <p>
+                                                    {item.todoList.length}
+                                                </p>
+                                            </div>
+                                            :
+                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6 hover:bg-[#EB4747]">
+                                                <p className="new-label">
+                                                    <span>{item.todoList.length}</span>
+                                                </p>
+                                            </div>}
 
                                     </div>
                                 </div>
