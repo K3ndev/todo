@@ -41,3 +41,26 @@
 .item-custom:hover p.new-label::after {
     content: url('../public/foo.svg');
 }
+
+/* gradient for modal */
+.custom-gradient {
+    background: linear-gradient(200deg, rgb(8, 137, 160) 0%, rgb(255, 255, 255) 50%);
+}
+
+/* mantine modal reset*/
+.mantine-Modal-inner {
+    padding: 0;
+    /* background: linear-gradient(200deg, rgb(8, 137, 160) 0%, rgb(255, 255, 255) 50%); */
+}
+
+.mantine-Modal-modal {
+    padding: 0;
+    background-color: transparent;
+}
+
+@media (min-width: 768px) {
+    .custom-gradient {
+        border-radius: 20px;
+
+    }
+}

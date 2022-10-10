@@ -17,6 +17,7 @@ export const useTodoStore = create((set, get) => ({
         }
 
     ],
+    humanName: '',
 
     // computed 
 
@@ -33,6 +34,7 @@ export const useTodoStore = create((set, get) => ({
             categoryList: newArr
         }))
     },
+    changeHumanName: (humanName: string) => set({ humanName: humanName }),
 
 
 

@@ -1,9 +1,11 @@
 import type { NextPage } from 'next'
 import Layout from '../layout/index'
 import Head from 'next/head'
-import { TodoList, Sidebar } from '../components/index'
+import { TodoList, Sidebar, ModalLogin } from '../components/index'
 import { format } from 'date-fns'
 import Image from 'next/image'
+import { useTodoStore } from '../store/todoStore'
+import { useEffect } from 'react'
 
 const Home: NextPage = () => {
 
@@ -23,11 +25,22 @@ const Home: NextPage = () => {
   }
   const period = periodFN()
 
+  // store
+  const { humanName } = useTodoStore<any>((states: any) => states)
+
+
+  // message to Human
+  useEffect(() => {
+    console.log("%cPlease don't click it.", "background: white; color: #1992FA; font-size:50px");
+    console.log("%chttps://bit.ly/3Ev5HAR", "background: white; color: #1992FA; font-size:20px");
+  }, [])
+
   return (
     <>
       <Head>
         <title>Dona Clone</title>
       </Head>
+
       <Layout>
 
         {/* sidebar */}
@@ -47,7 +60,8 @@ const Home: NextPage = () => {
                   height={35} width={35}
                 />
                 <div className='w-full'>
-                  <h1 className='text-xl	md:text-2xl lg:text-3xl font-normal text-black leading-none w-full'>Good {period}, Human</h1>
+                  <ModalLogin />
+                  <h1 className='text-xl	md:text-2xl lg:text-3xl font-normal text-black leading-none w-full'>Good {period}, {humanName.length == false ? 'Human' : humanName}</h1>
                   <p className='text-base	md:text-base lg:text-2xl font-normal text-[#6D6D6D] leading-6'>It&apos;s  {day}, {month} {dayNum}   </p>
                 </div>
 
