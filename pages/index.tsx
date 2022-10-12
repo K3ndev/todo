@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from 'next'
 import Layout from '../layout/index'
 import Head from 'next/head'
@@ -28,13 +29,6 @@ const Home: NextPage = () => {
   // store
   const { humanName } = useTodoStore<any>((states: any) => states)
 
-
-  // message to Human
-  useEffect(() => {
-    console.log("%cPlease don't click it.", "background: white; color: #1992FA; font-size:50px");
-    console.log("%chttps://bit.ly/3Ev5HAR", "background: white; color: #1992FA; font-size:20px");
-  }, [])
-
   return (
     <>
       <Head>
@@ -54,11 +48,7 @@ const Home: NextPage = () => {
 
             <div className='w-full flex justify-start mt-9'>
               <div className='flex gap-5'>
-                <Image
-                  src="/dona_Avatar.svg"
-                  alt="dona_Avatar"
-                  height={35} width={35}
-                />
+                <img src="/dona_Avatar.svg" alt="dona_Avatar" className='w-[25px] md:w-[35px]' />
                 <div className='w-full'>
                   <ModalLogin />
                   <h1 className='text-xl	md:text-2xl lg:text-3xl font-normal text-black leading-none w-full'>Good {period}, {humanName.length == false ? 'Human' : humanName}</h1>

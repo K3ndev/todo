@@ -78,7 +78,7 @@ export const TodoList: NextPage = () => {
 
         if (getIndex(data.todoList) === false) {
             const deepClone = _.cloneDeep(categoryList);
-            deepClone[getIsUsedIndex].todoList = [...deepClone[getIsUsedIndex].todoList, { list: data.todoList, isChecked: false }].reverse()
+            deepClone[getIsUsedIndex].todoList = [...deepClone[getIsUsedIndex].todoList, { list: data.todoList, isChecked: false }]
 
             resetEverything(deepClone)
         }
@@ -114,8 +114,15 @@ export const TodoList: NextPage = () => {
         resetEverything(deepClone)
     }
 
+    // Fn reverseData
+    const reverseData = (() => {
+        const deepClone = _.cloneDeep(categoryList[getIsUsedIndex].todoList);
 
-    // weird behavior when the name is the same
+        deepClone.reverse();
+        return deepClone
+    })()
+    const deepClone = _.cloneDeep(categoryList[getIsUsedIndex].todoList);
+
     return (
         <div className='w-full gap-4 flex flex-col items-center justify-center'>
 
@@ -133,22 +140,22 @@ export const TodoList: NextPage = () => {
 
                 {/*  */}
                 {
-                    categoryList[getIsUsedIndex]?.todoList.map((item: any) => {
+                    reverseData.map((item: any) => {
                         return (
-                            <div key={getUniqueId()} className='bg-white w-full flex items-center rounded-2xl h-11 lg:h-16 px-6 py-4'>
+                            <div key={getUniqueId()} className='bg-white min-w-full flex items-center rounded-2xl px-6 py-4'>
 
-                                <div className='w-full flex gap-4 items-center'>
-                                    <button onClick={() => { changeChecked(item.list) }} className={`${item.isChecked ? 'bg-white' : 'bg-[#D9D9D9]'} w-5 h-5 lg:w-6 lg:h-6 rounded-lg flex items-center justify-center`}>
+                                <div className='w-full flex gap-4 items-center h-auto'>
+                                    <button onClick={() => { changeChecked(item.list) }} className={`${item.isChecked ? 'bg-white' : 'bg-[#D9D9D9]'} min-w-[1.25rem] min-h-[1.25rem] lg:min-w-[1.5rem] lg:min-h-[1.5rem] rounded-lg flex items-center justify-center`}>
                                         {
                                             item.isChecked &&
-                                            <IconContext.Provider value={{ color: "black", className: "rounded-lg w-5 h-5 lg:w-6 lg:h-6" }}>
+                                            <IconContext.Provider value={{ color: "black", className: "rounded-lg " }}>
                                                 <div>
                                                     <BsCheckSquareFill />
                                                 </div>
                                             </IconContext.Provider>
                                         }
                                     </button>
-                                    <p className={`${item.isChecked && 'line-through decoration-4'} font-normal text-xs md:text-sm lg:text-base w-full`}>{item.list}</p>
+                                    <p className={`${item.isChecked && 'line-through decoration-4'} font-normal text-xs md:text-sm lg:text-base`}>{item.list}</p>
                                 </div>
                                 <button onClick={() => { deleteList(item.list) }} className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
                                     <AiOutlineDelete />

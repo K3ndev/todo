@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import Image from 'next/image'
@@ -89,7 +90,7 @@ export const Sidebar: NextPage = () => {
     }
 
     return (
-        <aside className='hidden lg:inline-flex justify-center p-10 w-[45%] h-[90vh] bg-white rounded-[20px]'>
+        <aside className='hidden lg:inline-flex justify-center p-10 max-w-[34%] h-[90vh] bg-white rounded-[20px]'>
 
             {/* categoryList */}
             <div className='w-full h-[82vh] scrollbar-hide'>
@@ -99,31 +100,42 @@ export const Sidebar: NextPage = () => {
                     {
                         categoryList.map((item: categoryList) => {
                             return (
-                                <div key={item.categoryName}>
-                                    <div onClick={() => onClickHandler(item.categoryName)} className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between items-center rounded-[20px] w-full h-16 cursor-pointer`}>
-                                        <div className="flex gap-6 items-center pl-6 py-4" >
-                                            <Image
-                                                src="/dona_Avatar.svg"
-                                                alt="dona_Avatar"
-                                                height={15} width={15}
-                                            />
-                                            <p className="font-normal text-black text-base">{item.categoryName}</p>
+                                // <div key={item.categoryName} className='min-w-full h-auto'>
+                                //     <div onClick={() => onClickHandler(item.categoryName)} className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between items-center rounded-[20px] min-w-ful cursor-pointer`}>
+                                //         <div className="flex gap-6 items-center pl-6 py-4 w-full h-auto" >
+                                //             <img
+                                //                 src="/dona_Avatar.svg"
+                                //                 alt="dona_Avatar"
+                                //                 className="max-w-[15px] max-h-[15px]"
+                                //             />
+                                //             <p className="font-normal text-black text-base custom-text">{item.categoryName}</p>
+                                //         </div>
+
+                                //     </div>
+                                // </div>
+
+                                <div key={item.categoryName} className='min-w-full flex items-center'>
+
+                                    <div className="w-full flex justify-between">
+                                        <div onClick={() => onClickHandler(item.categoryName)} className={`w-full flex gap-4 items-center h-auto cursor-pointer`}>
+                                            <img src="/dona_Avatar.svg" alt="dona_Avatar" className="max-w-[15px] max-h-[15px]" />
+                                            <p className="font-normal text-black text-base custom-text ">{item.categoryName}</p>
                                         </div>
 
                                         {/* using css, that will change the content */}
                                         {item.categoryName === 'Home' ?
-                                            <div className="bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6">
+                                            <div className="bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem]  text-[#6D6D6D] flex justify-center items-center">
                                                 <p>
                                                     {item.todoList.length}
                                                 </p>
                                             </div>
                                             :
-                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg w-7 h-7 text-[#6D6D6D] flex justify-center items-center mr-6 hover:bg-[#EB4747]">
+                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center hover:bg-[#EB4747]">
                                                 <p className="new-label">
                                                     <span>{item.todoList.length}</span>
                                                 </p>
-                                            </div>}
-
+                                            </div>
+                                        }
                                     </div>
                                 </div>
 
