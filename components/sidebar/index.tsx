@@ -63,7 +63,7 @@ export const Sidebar: NextPage = () => {
         inputReset()
     }
     const onClickHandler = (categoryName: string) => {
-        // i don't know how to use map inside of set() in zustand so this is temporary
+        // i don't know how to use build in methods inside of set() in zustand so this is temporary
         const reset = () => {
             tempCategory.map((item: categoryList) => {
                 item.isUsed = false;
@@ -90,47 +90,34 @@ export const Sidebar: NextPage = () => {
     }
 
     return (
-        <aside className='hidden lg:inline-flex justify-center p-10 max-w-[34%] h-[90vh] bg-white rounded-[20px]'>
+        <aside className='hidden lg:inline-flex justify-center p-10 w-[44%] md:w-[34%] h-[90vh] bg-white rounded-[20px]'>
 
             {/* categoryList */}
             <div className='w-full h-[82vh] scrollbar-hide'>
-                <div ref={parent} className="flex flex-col w-full gap-4">
+                <div ref={parent} className="flex flex-col max-w-full gap-4">
 
                     {/* list */}
                     {
                         categoryList.map((item: categoryList) => {
                             return (
-                                // <div key={item.categoryName} className='min-w-full h-auto'>
-                                //     <div onClick={() => onClickHandler(item.categoryName)} className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between items-center rounded-[20px] min-w-ful cursor-pointer`}>
-                                //         <div className="flex gap-6 items-center pl-6 py-4 w-full h-auto" >
-                                //             <img
-                                //                 src="/dona_Avatar.svg"
-                                //                 alt="dona_Avatar"
-                                //                 className="max-w-[15px] max-h-[15px]"
-                                //             />
-                                //             <p className="font-normal text-black text-base custom-text">{item.categoryName}</p>
-                                //         </div>
-
-                                //     </div>
-                                // </div>
 
                                 <div key={item.categoryName} className='min-w-full flex items-center'>
 
-                                    <div className="w-full flex justify-between">
-                                        <div onClick={() => onClickHandler(item.categoryName)} className={`w-full flex gap-4 items-center h-auto cursor-pointer`}>
+                                    <div className={`${item.isUsed && 'bg-[#EAEDEE]'} w-full flex justify-between py-4 px-6 rounded-[20px] items-center`}>
+                                        <div onClick={() => onClickHandler(item.categoryName)} className={` w-full flex gap-4 items-center h-auto cursor-pointer`}>
                                             <img src="/dona_Avatar.svg" alt="dona_Avatar" className="max-w-[15px] max-h-[15px]" />
                                             <p className="font-normal text-black text-base custom-text ">{item.categoryName}</p>
                                         </div>
 
                                         {/* using css, that will change the content */}
                                         {item.categoryName === 'Home' ?
-                                            <div className="bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem]  text-[#6D6D6D] flex justify-center items-center">
+                                            <div className="max-w-11 max-h-7 bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center">
                                                 <p>
                                                     {item.todoList.length}
                                                 </p>
                                             </div>
                                             :
-                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="cursor-pointer item-custom bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center hover:bg-[#EB4747]">
+                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="max-w-11 max-h-7 cursor-pointer item-custom bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center hover:bg-[#EB4747]">
                                                 <p className="new-label">
                                                     <span>{item.todoList.length}</span>
                                                 </p>

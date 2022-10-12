@@ -41,10 +41,10 @@ const Home: NextPage = () => {
         <Sidebar />
 
         {/* main todolist */}
-        <section className='flex flex-col gap-7 w-full h-[90vh] items-center'>
+        <section className='flex flex-col md:w-[66%] gap-7 w-full h-[90vh] items-center'>
 
 
-          <div className='w-full lg:w-[66%] flex flex-col gap-4'>
+          <div className='w-full flex flex-col gap-4 md:w-[100%]'>
 
             <div className='w-full flex justify-start mt-9'>
               <div className='flex gap-5'>

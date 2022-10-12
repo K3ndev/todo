@@ -41,9 +41,6 @@ export const TodoList: NextPage = () => {
     }
 
 
-    //  form 
-    const [todoList, setTodoList] = useState<string[]>([])
-
     // hook for react form
     const {
         register,
@@ -56,9 +53,13 @@ export const TodoList: NextPage = () => {
 
     // getting the index base on listName
     const getIndex = (listName: string) => {
-        return categoryList[getIsUsedIndex].todoList.map((item: any) => {
-            return item.list
-        }).indexOf(listName)
+
+        if (getIsUsedIndex > 0) {
+            return categoryList[getIsUsedIndex].todoList.map((item: any) => {
+                return item.list
+            }).indexOf(listName)
+        }
+
     }
     //  to get the isUsed that is true, return an index 
     const getIsUsedIndex = (() => {
@@ -69,9 +70,10 @@ export const TodoList: NextPage = () => {
     function onSubmitHandler(data: IFormInputs) {
         const deepClone = _.cloneDeep(categoryList);
 
+        //  checker if any category list is selected
         // checking a duplicates
         const getIndex = (listName: string) => {
-            return deepClone[getIsUsedIndex].todoList.some((item: any) => {
+            return deepClone[getIsUsedIndex]?.todoList.some((item: any) => {
                 return item.list === listName
             })
         }
@@ -83,6 +85,7 @@ export const TodoList: NextPage = () => {
             resetEverything(deepClone)
         }
         reset()
+
     }
     // Fn for checking the list 
     function changeChecked(listName: string) {
@@ -90,7 +93,7 @@ export const TodoList: NextPage = () => {
 
         // getting the index base on listName
         const getIndex = (listName: string) => {
-            return deepClone[getIsUsedIndex].todoList.map((item: any) => {
+            return deepClone[getIsUsedIndex]?.todoList.map((item: any) => {
                 return item.list
             }).indexOf(listName)
         }
@@ -105,7 +108,7 @@ export const TodoList: NextPage = () => {
 
         // getting the index base on listName
         const getIndex = (listName: string) => {
-            return deepClone[getIsUsedIndex].todoList.map((item: any) => {
+            return deepClone[getIsUsedIndex]?.todoList.map((item: any) => {
                 return item.list
             }).indexOf(listName)
         }
@@ -116,12 +119,11 @@ export const TodoList: NextPage = () => {
 
     // Fn reverseData
     const reverseData = (() => {
-        const deepClone = _.cloneDeep(categoryList[getIsUsedIndex].todoList);
+        const deepClone = _.cloneDeep(categoryList[getIsUsedIndex]?.todoList);
 
-        deepClone.reverse();
+        deepClone?.reverse();
         return deepClone
     })()
-    const deepClone = _.cloneDeep(categoryList[getIsUsedIndex].todoList);
 
     return (
         <div className='w-full gap-4 flex flex-col items-center justify-center'>
@@ -129,7 +131,7 @@ export const TodoList: NextPage = () => {
             <form action="#" onSubmit={handleSubmit(onSubmitHandler)} className='w-full'>
                 <label htmlFor="todoList">
                     <div className='w-full'>
-                        <input autoComplete="off" {...register("todoList")} placeholder='Write a new task...' className='placeholder:font-normal placeholder:text-xs placeholder:md:text-sm placeholder:lg:text-base font-normal text-xs md:text-sm lg:text-base px-6 py-4 w-full h-11 lg:h-16 bg-[#D9D9D9] rounded-2xl outline-0 focus:bg-white' />
+                        <input disabled={getIsUsedIndex === -1 && true} autoComplete="off" {...register("todoList")} placeholder='Write a new task...' className='placeholder:font-normal placeholder:text-xs placeholder:md:text-sm placeholder:lg:text-base font-normal text-xs md:text-sm lg:text-base px-6 py-4 w-full h-11 lg:h-16 bg-[#D9D9D9] rounded-2xl outline-0 focus:bg-white' />
                     </div>
                 </label>
             </form>
@@ -140,7 +142,7 @@ export const TodoList: NextPage = () => {
 
                 {/*  */}
                 {
-                    reverseData.map((item: any) => {
+                    reverseData?.map((item: any) => {
                         return (
                             <div key={getUniqueId()} className='bg-white min-w-full flex items-center rounded-2xl px-6 py-4'>
 

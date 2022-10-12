@@ -13,7 +13,7 @@ const Layout: NextPage<Props> = ({ children }) => {
 
     return (
         <>
-            <main className="w-full h-full gap-7 flex bg-[#EAEDEE] overflow-hidden">
+            <main className="w-full h-screen gap-7 flex bg-[#EAEDEE] overflow-hidden">
                 {/* <Header /> */}
                 {children}
             </main>
