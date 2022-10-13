@@ -6,11 +6,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import _ from 'lodash';
-import { AiOutlineDelete } from 'react-icons/ai'
-import { BsCheckSquareFill } from 'react-icons/bs'
-import { IconContext } from "react-icons";
-
-
+import { DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 interface categoryList {
     categoryName: string,
     isUsed: boolean,
@@ -147,20 +143,18 @@ export const TodoList: NextPage = () => {
                             <div key={getUniqueId()} className='bg-white min-w-full flex items-center rounded-2xl px-6 py-4'>
 
                                 <div className='w-full flex gap-4 items-center h-auto'>
-                                    <button onClick={() => { changeChecked(item.list) }} className={`${item.isChecked ? 'bg-white' : 'bg-[#D9D9D9]'} min-w-[1.25rem] min-h-[1.25rem] lg:min-w-[1.5rem] lg:min-h-[1.5rem] rounded-lg flex items-center justify-center`}>
-                                        {
-                                            item.isChecked &&
-                                            <IconContext.Provider value={{ color: "black", className: "rounded-lg " }}>
-                                                <div>
-                                                    <BsCheckSquareFill />
-                                                </div>
-                                            </IconContext.Provider>
-                                        }
-                                    </button>
+                                    {
+                                        !item.isChecked ?
+                                            <div onClick={() => { changeChecked(item.list) }} className='w-[1.25rem] h-[1.25rem] md:w-[1.813rem] md:h-[1.813rem] bg-[#D9D9D9] rounded-lg md:rounded-[0.625rem] cursor-pointer' />
+                                            :
+                                            <div onClick={() => { changeChecked(item.list) }} className='w-[1.25rem] h-[1.25rem] md:w-[1.813rem] md:h-[1.813rem] bg-black rounded-lg md:rounded-[0.625rem] cursor-pointer flex justify-center items-center' >
+                                                <CheckOutlined className='text-white scale-75 md:scale-100' />
+                                            </div>
+                                    }
                                     <p className={`${item.isChecked && 'line-through decoration-4'} font-normal text-xs md:text-sm lg:text-base`}>{item.list}</p>
                                 </div>
                                 <button onClick={() => { deleteList(item.list) }} className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
-                                    <AiOutlineDelete />
+                                    <DeleteOutlined className='text-center' />
                                 </button>
                             </div>
                         )

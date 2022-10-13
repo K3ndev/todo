@@ -4,9 +4,7 @@ import Layout from '../layout/index'
 import Head from 'next/head'
 import { TodoList, Sidebar, ModalLogin } from '../components/index'
 import { format } from 'date-fns'
-import Image from 'next/image'
 import { useTodoStore } from '../store/todoStore'
-import { useEffect } from 'react'
 
 const Home: NextPage = () => {
 
