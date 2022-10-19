@@ -1,3 +1,4 @@
+import { number } from 'yup'
 import create from 'zustand'
 
 interface todoList {
@@ -6,22 +7,33 @@ interface todoList {
     todoList: string[]
 }
 
+
+// types
+type todoListType = {
+    id: number
+    isChecked: boolean,
+    list: string
+}
+type categoryType = {
+    id: number,
+    categoryName: string
+    isUsed: boolean
+    todoList: todoListType[]
+}
+
 export const useTodoStore = create((set, get) => ({
 
     // states
     categoryList: [
         {
+            id: 1,
             categoryName: 'Home',
             isUsed: true,
             todoList: []
         }
 
     ],
-    humanName: '',
-
-    // computed 
-
-
+    name: '',
 
     // functions
     addTodo: (category: string, todoList: string[]) => {
@@ -34,8 +46,60 @@ export const useTodoStore = create((set, get) => ({
             categoryList: newArr
         }))
     },
-    changeHumanName: (humanName: string) => set({ humanName: humanName }),
 
 
+    // refactor...
+
+    // name of the user
+    addName: (argName: string) => set(() => ({
+        name: argName
+    })),
+
+    // categoryFn
+    addCategory: (argCategory: categoryType) => set((state: any) => ({
+        categoryList: [...state.categoryList, argCategory]
+    })),
+    removeCategory: (argId: number) => set((state: any) => ({
+        categoryList: state.categoryList.filter((item: categoryType) => {
+            return argId !== item.id
+        })
+    })),
+    updateCategory: (argCategory: categoryType) => set((state: any) => ({
+        categoryList: state.categoryList.map((item: categoryType) => {
+            if (argCategory.id === item.id) {
+                return item
+            } else item
+        })
+    })),
+    changeIsUsed: (argCategory: categoryType) => set((state: any) => ({
+        categoryList: state.categoryList.map((item: categoryType) => {
+            if (argCategory.categoryName === item.categoryName) {
+                return { id: item.id, categoryName: item.categoryName, isUsed: true, todoList: item.todoList }
+            }
+            return { id: item.id, categoryName: item.categoryName, isUsed: false, todoList: item.todoList }
+        })
+    })),
+
+
+    // todoList
+    addList: (argIndex: number, argTodoList: todoListType) => set((state: any) => ({
+        categoryList: state.categoryList[argIndex].todoList.map((item: todoListType) => {
+            if (argTodoList.id !== item.id) {
+                state.categoryList[argIndex].todoList.push(argTodoList)
+            }
+        })
+    })),
+    removeList: (argIndex: number, argId: number) => set((state: any) => ({
+        categoryList: state.categoryList[argIndex].todoList.filter((item: todoListType) => {
+            return argId !== item.id
+        })
+    })),
+    updateList: (argIndex: number, argTodoList: todoListType) => set((state: any) => ({
+        categoryList: state.categoryList[argIndex].todoList.map((item: todoListType) => {
+            if (argTodoList.id === item.id) {
+                return argTodoList
+            } else item
+        })
+    }))
 
 }))

@@ -1,23 +1,23 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-import Image from 'next/image'
 import { useTodoStore } from '../../store/todoStore'
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-
-// type safe
-interface IFormInputs {
+// type
+type inputType = {
     todoCategory: string
 }
 
-interface categoryList {
+type categoryType = {
+    id: number,
     categoryName: string,
     isUsed: boolean,
     todoList: []
 }
+
 
 // validation
 const schema = yup.object({
@@ -25,11 +25,10 @@ const schema = yup.object({
 }).required();
 
 
-
 export const Sidebar: NextPage = () => {
 
     // store
-    const { categoryList, addTodo, resetEverything } = useTodoStore<any>((states: any) => states)
+    const { categoryList, addCategory, changeIsUsed, removeCategory } = useTodoStore<any>((states: any) => states)
 
     // states
     const tempCategory = categoryList;
@@ -37,56 +36,44 @@ export const Sidebar: NextPage = () => {
     // for auto animate
     const [parent] = useAutoAnimate<HTMLDivElement>()
 
+    // for react hook form
     const {
         register,
         handleSubmit,
         reset: inputReset,
-    } = useForm<IFormInputs>({
+    } = useForm<inputType>({
         resolver: yupResolver(schema)
     });
 
+    // get uniqueID 
+    const getUniqueId = () => {
+        return Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
+    }
 
-    // Fn
-    const isCategory = (input: string) => {
-        return categoryList.find((item: categoryList) => {
-            return item.categoryName === input
+    // checker, will return boolean
+    const checkerCategory = (argCategoryName: string) => {
+        return categoryList.some((item: categoryType) => {
+            return item.categoryName === argCategoryName
         })
     }
-    // return index of isUsed
-    const getIsUsedIndex = () => {
-        return categoryList.map((item: categoryList) => item.isUsed).indexOf(true)
-    }
-    const onSubmitHandler = (data: IFormInputs) => {
-        if (isCategory(data.todoCategory) === undefined) {
-            addTodo(data.todoCategory, [])
+
+    // to add another category
+    const onSubmitHandler = (data: inputType) => {
+        if (!checkerCategory(data.todoCategory)) {
+            const newCategory = { id: getUniqueId(), categoryName: data.todoCategory, isUsed: false, todoList: [] }
+            addCategory(newCategory)
+            changeIsUsed(newCategory)
         }
-        inputReset()
     }
-    const onClickHandler = (categoryName: string) => {
-        // i don't know how to use build in methods inside of set() in zustand so this is temporary
-        const reset = () => {
-            tempCategory.map((item: categoryList) => {
-                item.isUsed = false;
-            })
-            tempCategory.map((item: categoryList) => {
-                if (item.categoryName === categoryName) {
-                    item.isUsed = true;
-                }
-            })
-        }
-        reset();
-        resetEverything(tempCategory)
+
+    // to select the target category
+    const onClickHandler = (argCategory: categoryType) => {
+        changeIsUsed(argCategory)
     }
-    const onDeleteClickHandler = (categoryName: string) => {
-        if (categoryName !== 'Home') {
-            const findIndex = () => {
-                return tempCategory.map((item: categoryList) => {
-                    return item.categoryName
-                }).indexOf(categoryName)
-            }
-            tempCategory.splice(findIndex(), 1);
-            resetEverything(tempCategory)
-        }
+
+    // to delete the target category
+    const onDeleteClickHandler = (argCategory: categoryType) => {
+        removeCategory(argCategory.id)
     }
 
     return (
@@ -98,18 +85,17 @@ export const Sidebar: NextPage = () => {
 
                     {/* list */}
                     {
-                        categoryList.map((item: categoryList) => {
+                        categoryList.map((item: categoryType) => {
                             return (
 
                                 <div key={item.categoryName} className='min-w-full flex items-center'>
 
                                     <div className={`${item.isUsed && 'bg-[#EAEDEE]'} w-full flex justify-between py-4 px-6 rounded-[20px] items-center`}>
-                                        <div onClick={() => onClickHandler(item.categoryName)} className={` w-full flex gap-4 items-center h-auto cursor-pointer`}>
+                                        <div onClick={() => onClickHandler(item)} className={` w-full flex gap-4 items-center h-auto cursor-pointer`}>
                                             <img src="/dona_Avatar.svg" alt="dona_Avatar" className="max-w-[15px] max-h-[15px]" />
                                             <p className="font-normal text-black text-base custom-text ">{item.categoryName}</p>
                                         </div>
 
-                                        {/* using css, that will change the content */}
                                         {item.categoryName === 'Home' ?
                                             <div className="max-w-11 max-h-7 bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center">
                                                 <p>
@@ -117,7 +103,7 @@ export const Sidebar: NextPage = () => {
                                                 </p>
                                             </div>
                                             :
-                                            <div onClick={() => onDeleteClickHandler(item.categoryName)} className="max-w-11 max-h-7 cursor-pointer item-custom bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center hover:bg-[#EB4747]">
+                                            <div onClick={() => onDeleteClickHandler(item)} className="max-w-11 max-h-7 cursor-pointer item-custom bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center hover:bg-[#EB4747]">
                                                 <p className="new-label">
                                                     <span>{item.todoList.length}</span>
                                                 </p>

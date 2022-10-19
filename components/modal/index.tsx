@@ -9,21 +9,23 @@ export const ModalLogin = () => {
     // states
     const [opened, setOpened] = useState(true);
     // name 
-    const [humanName, setHumanName] = useState<string>('')
-    const [humanNameDeb] = useDebouncedValue(humanName, 200);
+    const [inputName, setInputName] = useState<string>('')
+    const [nameDeb] = useDebouncedValue(inputName, 200);
 
     // store
-    const { humanName: name, changeHumanName } = useTodoStore<any>((states: any) => states)
+    const { name, addName } = useTodoStore<any>((states: any) => states)
 
     // input fN
     function inputNameHandler(e: React.ChangeEvent<HTMLInputElement>) {
-        setHumanName(e.target.value)
+        setInputName(e.target.value)
     }
 
     useEffect(() => {
-        changeHumanName(humanNameDeb)
+        setTimeout(() => {
+            addName(nameDeb)
+        }, 300)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [humanNameDeb])
+    }, [nameDeb])
 
     return (
         <>
@@ -55,7 +57,7 @@ export const ModalLogin = () => {
 
                         <div className='w-full flex flex-col'>
                             <h1 className='text-base'>What&apos;s your name?</h1>
-                            <input autoComplete="off" value={humanName} onChange={inputNameHandler} type="text" placeholder='Type it here' className='outline-none focus:border-b-2 w-[40%] text-[#195786] text-sm h-7' />
+                            <input autoComplete="off" value={inputName} onChange={inputNameHandler} type="text" placeholder='Type it here' className='outline-none focus:border-b-2 w-[40%] text-[#195786] text-sm h-7' />
                             <button onClick={() => setOpened(!opened)} className='w-[34%] text-center bg-[#008FFD] hover:bg-[#0276cf] p-2 text-white rounded-[0.625rem] mt-10 text-base'>
                                 <div>
                                     Continue

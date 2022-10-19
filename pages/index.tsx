@@ -25,7 +25,7 @@ const Home: NextPage = () => {
   const period = periodFN()
 
   // store
-  const { humanName } = useTodoStore<any>((states: any) => states)
+  const { name } = useTodoStore<any>((states: any) => states)
 
   return (
     <>
@@ -49,7 +49,7 @@ const Home: NextPage = () => {
                 <img src="/dona_Avatar.svg" alt="dona_Avatar" className='w-[25px] md:w-[35px]' />
                 <div className='w-full'>
                   <ModalLogin />
-                  <h1 className='text-xl	md:text-2xl lg:text-3xl font-normal text-black leading-none w-full'>Good {period}, {humanName.length == false ? 'Human' : humanName}</h1>
+                  <h1 className='text-xl	md:text-2xl lg:text-3xl font-normal text-black leading-none w-full'>Good {period}, {name.length == false ? 'Human' : name}</h1>
                   <p className='text-base	md:text-base lg:text-2xl font-normal text-[#6D6D6D] leading-6'>It&apos;s  {day}, {month} {dayNum}   </p>
                 </div>
 

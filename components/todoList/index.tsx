@@ -25,17 +25,16 @@ interface IFormInputs {
 
 export const TodoList: NextPage = () => {
 
+    //! refactor this code.. messy
+
+
     // autoanimate
     // const [parent] = useAutoAnimate<HTMLDivElement>()
-
-    // zustand 
-    const { categoryList, resetEverything } = useTodoStore<any>((states) => states)
 
     // get uniqueID 
     const getUniqueId = () => {
         return Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
     }
-
 
     // hook for react form
     const {
@@ -45,6 +44,9 @@ export const TodoList: NextPage = () => {
     } = useForm<IFormInputs>({
         resolver: yupResolver(schema)
     });
+
+    // zustand 
+    const { categoryList, resetEverything, addCategory } = useTodoStore<any>((states) => states)
 
 
     // getting the index base on listName
@@ -83,6 +85,7 @@ export const TodoList: NextPage = () => {
         reset()
 
     }
+
     // Fn for checking the list 
     function changeChecked(listName: string) {
         const deepClone = _.cloneDeep(categoryList);
