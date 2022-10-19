@@ -64,6 +64,7 @@ export const Sidebar: NextPage = () => {
             addCategory(newCategory)
             changeIsUsed(newCategory)
         }
+        inputReset()
     }
 
     // to select the target category
@@ -88,17 +89,18 @@ export const Sidebar: NextPage = () => {
                         categoryList.map((item: categoryType) => {
                             return (
 
-                                <div key={item.categoryName} className='min-w-full flex items-center'>
+                                <div key={item.categoryName} className=''>
 
-                                    <div className={`${item.isUsed && 'bg-[#EAEDEE]'} w-full flex justify-between py-4 px-6 rounded-[20px] items-center`}>
-                                        <div onClick={() => onClickHandler(item)} className={` w-full flex gap-4 items-center h-auto cursor-pointer`}>
+                                    <div className={`${item.isUsed && 'bg-[#EAEDEE]'} flex justify-between cursor-pointer rounded-[20px] items-center py-5 px-6 h-auto`} onClick={() => onClickHandler(item)}>
+
+                                        <div className={`flex items-center`}>
                                             <img src="/dona_Avatar.svg" alt="dona_Avatar" className="max-w-[15px] max-h-[15px]" />
-                                            <p className="font-normal text-black text-base custom-text ">{item.categoryName}</p>
+                                            <p className="px-3 break-all text-base font-normal text-black">{item.categoryName}</p>
                                         </div>
 
                                         {item.categoryName === 'Home' ?
-                                            <div className="max-w-11 max-h-7 bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center">
-                                                <p>
+                                            <div className="">
+                                                <p className="max-w-11 max-h-7 bg-[#D9D9D9] rounded-lg px-2 py-[0.15rem] text-[#6D6D6D] flex justify-center items-center">
                                                     {item.todoList.length}
                                                 </p>
                                             </div>
@@ -111,7 +113,6 @@ export const Sidebar: NextPage = () => {
                                         }
                                     </div>
                                 </div>
-
                             )
                         })
                     }

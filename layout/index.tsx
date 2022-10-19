@@ -10,11 +10,9 @@ const Layout: NextPage<Props> = ({ children }) => {
 
 
     return (
-        <>
-            <main className="w-full h-screen gap-7 flex bg-[#EAEDEE] overflow-hidden">
-                {children}
-            </main>
-        </>
+        <main className="w-screen h-screen gap-7 flex bg-[#EAEDEE] relative p-10">
+            {children}
+        </main>
 
     )
 

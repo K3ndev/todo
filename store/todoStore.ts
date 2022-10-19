@@ -1,4 +1,3 @@
-import { number } from 'yup'
 import create from 'zustand'
 
 interface todoList {
@@ -36,11 +35,6 @@ export const useTodoStore = create((set, get) => ({
     name: '',
 
     // functions
-    addTodo: (category: string, todoList: string[]) => {
-        set((state: { categoryList: [] }) => ({
-            categoryList: [...state.categoryList, { categoryName: category, isUsed: false, todoList: todoList }]
-        }))
-    },
     resetEverything: (newArr: []) => {
         set((state: { categoryList: [] }) => ({
             categoryList: newArr
@@ -62,13 +56,6 @@ export const useTodoStore = create((set, get) => ({
     removeCategory: (argId: number) => set((state: any) => ({
         categoryList: state.categoryList.filter((item: categoryType) => {
             return argId !== item.id
-        })
-    })),
-    updateCategory: (argCategory: categoryType) => set((state: any) => ({
-        categoryList: state.categoryList.map((item: categoryType) => {
-            if (argCategory.id === item.id) {
-                return item
-            } else item
         })
     })),
     changeIsUsed: (argCategory: categoryType) => set((state: any) => ({
