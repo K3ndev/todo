@@ -1,12 +1,5 @@
 import create from 'zustand'
 
-interface todoList {
-    categoryName: string,
-    isUsed: boolean,
-    todoList: string[]
-}
-
-
 // types
 type todoListType = {
     id: number
@@ -20,7 +13,12 @@ type categoryType = {
     todoList: todoListType[]
 }
 
-export const useTodoStore = create((set, get) => ({
+type storeType = {
+    categoryList: categoryType[],
+    name: string
+}
+
+export const useTodoStore = create((set) => ({
 
     // states
     categoryList: [
@@ -45,20 +43,16 @@ export const useTodoStore = create((set, get) => ({
     // refactor...
 
     // name of the user
-    addName: (argName: string) => set(() => ({
-        name: argName
-    })),
+    addName: (argName: string) => set(() => ({ name: argName })),
 
     // categoryFn
-    addCategory: (argCategory: categoryType) => set((state: any) => ({
+    addCategory: (argCategory: categoryType) => set((state: storeType) => ({
         categoryList: [...state.categoryList, argCategory]
     })),
-    removeCategory: (argId: number) => set((state: any) => ({
-        categoryList: state.categoryList.filter((item: categoryType) => {
-            return argId !== item.id
-        })
+    removeCategory: (argId: number) => set((state: storeType) => ({
+        categoryList: state.categoryList.filter((item: categoryType) => argId !== item.id)
     })),
-    changeIsUsed: (argCategory: categoryType) => set((state: any) => ({
+    changeIsUsed: (argCategory: categoryType) => set((state: storeType) => ({
         categoryList: state.categoryList.map((item: categoryType) => {
             if (argCategory.categoryName === item.categoryName) {
                 return { id: item.id, categoryName: item.categoryName, isUsed: true, todoList: item.todoList }
@@ -69,24 +63,46 @@ export const useTodoStore = create((set, get) => ({
 
 
     // todoList
-    addList: (argIndex: number, argTodoList: todoListType) => set((state: any) => ({
-        categoryList: state.categoryList[argIndex].todoList.map((item: todoListType) => {
-            if (argTodoList.id !== item.id) {
-                state.categoryList[argIndex].todoList.push(argTodoList)
+    // adding list in the chosen category
+    addList: (argTodoList: todoListType) => set((state: storeType) => ({
+        categoryList: state.categoryList.map((item: categoryType) => {
+            if (item.isUsed) {
+                return { id: item.id, categoryName: item.categoryName, isUsed: true, todoList: [...item.todoList, argTodoList] }
             }
+            return item
         })
     })),
-    removeList: (argIndex: number, argId: number) => set((state: any) => ({
-        categoryList: state.categoryList[argIndex].todoList.filter((item: todoListType) => {
-            return argId !== item.id
+    removeList: (argTodoList: todoListType) => set((state: storeType) => ({
+        categoryList: state.categoryList.map((item: categoryType) => {
+            if (item.isUsed === true) {
+                return {
+                    id: item.id,
+                    categoryName: item.categoryName,
+                    isUsed: item.isUsed,
+                    todoList: item.todoList.filter((item: todoListType) => {
+                        return item.id !== argTodoList.id
+                    })
+                }
+            }
+            return item
         })
     })),
-    updateList: (argIndex: number, argTodoList: todoListType) => set((state: any) => ({
-        categoryList: state.categoryList[argIndex].todoList.map((item: todoListType) => {
-            if (argTodoList.id === item.id) {
-                return argTodoList
-            } else item
+    changeIsChecked: (argTodoList: todoListType) => set((state: storeType) => ({
+        categoryList: state.categoryList.map((item: categoryType) => {
+            if (item.isUsed === true) {
+                return {
+                    id: item.id,
+                    categoryName: item.categoryName,
+                    isUsed: item.isUsed,
+                    todoList: item.todoList.map((item: todoListType) => {
+                        if (item.id === argTodoList.id) {
+                            return { id: item.id, isChecked: !item.isChecked, list: item.list }
+                        } else return item
+                    })
+                }
+            }
+            return item
         })
-    }))
+    })),
 
 }))
