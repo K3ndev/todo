@@ -113,7 +113,7 @@ export const TodoList: NextPage = () => {
                                                 <CheckOutlined className='text-white scale-75 md:scale-100' />
                                             </div>
                                     }
-                                    <p className={`${item.isChecked && 'line-through decoration-2'} font-normal text-xs md:text-sm lg:text-base`}>{item.list}</p>
+                                    <p className={`${item.isChecked && 'line-through decoration-2'} w-full font-normal text-xs md:text-sm lg:text-base break-all`}>{item.list}</p>
                                 </div>
                                 <button onClick={() => { removeTodoList(item) }} className='hover:bg-[#EB4747] rounded-full w-7 h-7 flex justify-center items-center cursor-pointer'>
                                     <DeleteOutlined className='text-center' />
